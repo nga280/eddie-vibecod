@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="nguyetnga" content="width=device-width, initial-scale=1.0">
+  <title>2222 Cyber Portfolio | 作品集關卡入口</title>
+  <style>
+    /* --------------------------------------------------
+       1. 全局與變數設定 (2222 賽博酷炫風格)
+    -------------------------------------------------- */
+    :root {
+      --bg-color: #080911;
+      --card-bg: rgba(18, 20, 38, 0.75);
+      --card-border: #1f2544;
+      --primary-cyan: #00f0ff;
+      --primary-pink: #ff007f;
+      --unlocked-glow: rgba(0, 240, 255, 0.4);
+      --locked-color: #4a5168;
+      --locked-bg: rgba(15, 17, 26, 0.6);
+      --text-main: #ffffff;
+      --text-sub: #8a99ad;
+      --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 酷炫動態科技背景網格 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* 漸層光暈背景裝飾 */
+    .bg-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(255, 0, 127, 0.05) 50%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* --------------------------------------------------
+       2. 個人頭像與標題區塊 (Header Profile)
+    -------------------------------------------------- */
+    .profile-section {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 18px;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary-cyan);
+      box-shadow: 0 0 20px var(--primary-cyan);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 大頭貼外圈旋轉科技光環 */
+    .avatar-wrapper::after {
+      content: "";
+      position: absolute;
+      top: -8px; left: -8px; right: -8px; bottom: -8px;
+      border-radius: 50%;
+      border: 2px dashed var(--primary-pink);
+      animation: rotateRing 12s linear infinite;
+      z-index: 1;
+    }
+
+    .user-name {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+      margin-bottom: 6px;
+    }
+
+    .user-subtitle {
+      font-size: 0.95rem;
+      color: var(--primary-cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+
+    /* --------------------------------------------------
+       3. 16 個關卡按鈕網格 (Grid Layout)
+    -------------------------------------------------- */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* 通用關卡卡片樣式 */
+    .level-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      min-height: 120px;
+    }
+
+    .level-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .level-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.4;
+      z-index: 2;
+    }
+
+    .status-badge {
+      font-size: 0.8rem;
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    /* --------------------------------------------------
+       4. 已解鎖關卡樣式 (前 2 個按鈕)
+    -------------------------------------------------- */
+    .level-card.unlocked {
+      color: var(--text-main);
+      border-color: rgba(0, 240, 255, 0.4);
+      cursor: pointer;
+    }
+
+    .level-card.unlocked .level-tag {
+      color: var(--primary-cyan);
+    }
+
+    .level-card.unlocked .status-badge {
+      color: var(--primary-cyan);
+    }
+
+    /* 酷炫 Hover 動畫效果 (3D 浮起 + 霓虹掃光 + 邊框發光) */
+    .level-card.unlocked::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(0, 240, 255, 0.15),
+        transparent
+      );
+      transform: rotate(45deg) translateY(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .level-card.unlocked:hover {
+      transform: translateY(-8px) scale(1.03);
+      border-color: var(--primary-cyan);
+      box-shadow: 0 10px 25px -5px var(--unlocked-glow),
+                  0 0 15px var(--unlocked-glow);
+    }
+
+    .level-card.unlocked:hover::before {
+      transform: rotate(45deg) translateY(100%);
+    }
+
+    /* --------------------------------------------------
+       5. 未解鎖關卡樣式 (剩餘 14 個按鈕)
+    -------------------------------------------------- */
+    .level-card.locked {
+      background: var(--locked-bg);
+      border-color: rgba(255, 255, 255, 0.05);
+      color: var(--locked-color);
+      cursor: not-allowed;
+      user-select: none;
+    }
+
+    .level-card.locked .level-tag {
+      color: #5c657d;
+    }
+
+    .level-card.locked .level-title {
+      color: #6c768f;
+    }
+
+    .level-card.locked .status-badge {
+      color: #5c657d;
+    }
+
+    /* 未解鎖懸浮上的紅光提醒動畫 */
+    .level-card.locked:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 0, 127, 0.3);
+      box-shadow: 0 0 12px rgba(255, 0, 127, 0.15);
+    }
+
+    /* --------------------------------------------------
+       6. 動畫與響應式設定 (Responsive Design)
+    -------------------------------------------------- */
+    @keyframes rotateRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 手機版優化 (寬度小於 600px 時改為雙排或單排) */
+    @media (max-width: 600px) {
+      body {
+        padding: 25px 15px;
+      }
+      .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+      }
+      .level-card {
+        padding: 15px;
+        min-height: 110px;
+      }
+      .level-title {
+        font-size: 0.95rem;
+      }
+      .user-name {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <!-- 正中央大頭貼與個人資訊區 -->
+  <header class="profile-section">
+    <div class="avatar-wrapper">
+      <!-- 假圖片預設，後續可更換為您自己的照片檔名 (例: avatar.jpg) -->
+      <img class="avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=cyber2222" alt="玩家大頭貼">
+    </div>
+    <h1 class="user-name">nguyetnga
+</h1>
+    <p class="user-subtitle">// 網頁前端實作任務選單</p>
+  </header>
+
+  <!-- 16 個任務關卡網格區 -->
+  <main class="grid-container">
+
+    <!-- 按鈕 1 (已解鎖) -->
+    <a href="w1/index.html" class="level-card unlocked">
+      <div>
+        <span class="level-tag">STAGE 01</span>
+        <div class="level-title">Week 1-數位名片</div>
+      </div>
+      <div class="status-badge">⚡ 點擊進入關卡</div>
+    </a>
+
+    <!-- 按鈕 2 (已解鎖) -->
+    <a href="w2/index.html" class="level-card unlocked">
+      <div>
+        <span class="level-tag">STAGE 02</span>
+        <div class="level-title">Week 2-今天吃甚麼？</div>
+      </div>
+      <div class="status-badge">⚡ 點擊進入關卡</div>
+    </a>
+
+    <!-- 按鈕 3 ~ 16 (未解鎖) -->
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 03</span>
+        <div class="level-title">Week 3-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 04</span>
+        <div class="level-title">Week 4-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 05</span>
+        <div class="level-title">Week 5-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 06</span>
+        <div class="level-title">Week 6-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 07</span>
+        <div class="level-title">Week 7-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 08</span>
+        <div class="level-title">Week 8-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 09</span>
+        <div class="level-title">Week 9-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 10</span>
+        <div class="level-title">Week 10-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 11</span>
+        <div class="level-title">Week 11-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 12</span>
+        <div class="level-title">Week 12-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 13</span>
+        <div class="level-title">Week 13-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 14</span>
+        <div class="level-title">Week 14-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 15</span>
+        <div class="level-title">Week 15-未開放</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+    <div class="level-card locked">
+      <div>
+        <span class="level-tag">STAGE 16</span>
+        <div class="level-title">Week 16-期末專題</div>
+      </div>
+      <div class="status-badge">🔒 關卡未解鎖</div>
+    </div>
+
+  </main>
+
+</body>
+</html>

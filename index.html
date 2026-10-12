@@ -2,12 +2,12 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="wieport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2222 Cyber Portfolio | 作品集關卡入口</title>
   <style>
     /* --------------------------------------------------
        1. 全局與變數設定 (2222 賽博酷炫風格)
-    -------------------------------------------------- */‹!DOCTYPE html > shtml lang=*zh-TW> <head>
+    -------------------------------------------------- */
     :root {
       --bg-color: #080911;
       --card-bg: rgba(18, 20, 38, 0.75);
@@ -178,7 +178,7 @@
     }
 
     /* --------------------------------------------------
-       4. 已解鎖關卡樣式 (前 2 個按鈕)
+       4. 已解鎖關卡樣式
     -------------------------------------------------- */
     .level-card.unlocked {
       color: var(--text-main);
@@ -224,7 +224,7 @@
     }
 
     /* --------------------------------------------------
-       5. 未解鎖關卡樣式 (剩餘 14 個按鈕)
+       5. 未解鎖關卡樣式
     -------------------------------------------------- */
     .level-card.locked {
       background: var(--locked-bg);
@@ -300,11 +300,9 @@
   <!-- 正中央大頭貼與個人資訊區 -->
   <header class="profile-section">
     <div class="avatar-wrapper">
-      <!-- 假圖片預設，後續可更換為您自己的照片檔名 (例: avatar.jpg) -->
       <img class="avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=cyber2222" alt="玩家大頭貼">
     </div>
-    <h1 class="user-name">nguyetnga
-</h1>
+    <h1 class="user-name">nguyetnga</h1>
     <p class="user-subtitle">// 網頁前端實作任務選單</p>
   </header>
 
@@ -329,15 +327,16 @@
       <div class="status-badge">⚡ 點擊進入關卡</div>
     </a>
 
-    <!-- 按鈕 3 ~ 16 (未解鎖) -->
-    <div class="level-card locked">
+    <!-- 按鈕 3 (已解鎖) -->
+    <a href="w3/index.html" class="level-card unlocked">
       <div>
         <span class="level-tag">STAGE 03</span>
-        <div class="level-title">Week 3-未開放</div>
+        <div class="level-title">Week 3-迷因產生器</div>
       </div>
-      <div class="status-badge">🔒 關卡未解鎖</div>
-    </div>
+      <div class="status-badge">⚡ 點擊進入關卡</div>
+    </a>
 
+    <!-- 按鈕 4 ~ 16 (未解鎖) -->
     <div class="level-card locked">
       <div>
         <span class="level-tag">STAGE 04</span>
